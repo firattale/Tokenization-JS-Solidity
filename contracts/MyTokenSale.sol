@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import "./CrowdSale.sol";
 
-contract MyCrowdsale is Crowdsale {
+contract MyTokensale is Crowdsale {
     constructor(
         uint256 rate, // rate in TKNbits
         address payable wallet,

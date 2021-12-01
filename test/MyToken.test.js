@@ -13,14 +13,18 @@ const expect = chai.expect;
 contract("MyToken", async (accounts) => {
 	const [owner, user1, user2] = accounts;
 
+	beforeEach(async () => {
+		this.token = await MyToken.new(1000000);
+	});
+
 	it("should assign all tokens to my account", async () => {
-		const myToken = await MyToken.deployed();
+		const myToken = this.token;
 		const totalSupply = await myToken.totalSupply();
 		const balance = myToken.balanceOf(owner);
 		expect(balance).to.eventually.be.a.bignumber.equal(totalSupply);
 	});
 	it("should transfer tokens", async () => {
-		const myToken = await MyToken.deployed();
+		const myToken = this.token;
 		const totalSupply = await myToken.totalSupply();
 		const amount = new BN(500);
 		await myToken.transfer(user1, amount, { from: owner });
@@ -30,7 +34,7 @@ contract("MyToken", async (accounts) => {
 		expect(balance2).to.eventually.be.a.bignumber.equal(totalSupply.sub(amount));
 	});
 	it("should not send more tokens than available", async () => {
-		const myToken = await MyToken.deployed();
+		const myToken = this.token;
 		const totalSupply = await myToken.totalSupply();
 		const amount = totalSupply.add(new BN(1));
 		expect(myToken.transfer(user1, amount, { from: owner })).to.eventually.be.rejectedWith("revert");
