@@ -34,6 +34,6 @@ contract("MyToken", async (accounts) => {
 		const totalSupply = await myToken.totalSupply();
 		const amount = totalSupply.add(new BN(1));
 		expect(myToken.transfer(user1, amount, { from: owner })).to.eventually.be.rejectedWith("revert");
-		return expect(myToken.balanceOf(owner)).to.eventually.be.a.bignumber.equal(totalSupply);
+		return expect(myToken.balanceOf(user1)).to.eventually.be.a.bignumber.equal(new BN(0));
 	});
 });
