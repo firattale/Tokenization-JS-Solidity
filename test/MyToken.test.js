@@ -1,4 +1,5 @@
 const MyToken = artifacts.require("MyToken");
+require("dotenv").config({ path: "/Users/firat.tale/Desktop/tokenization/test/.env" });
 
 const chai = require("chai");
 const BN = web3.utils.BN;
@@ -11,10 +12,10 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 
 contract("MyToken", async (accounts) => {
-	const [owner, user1, user2] = accounts;
+	const [owner, user1] = accounts;
 
 	beforeEach(async () => {
-		this.token = await MyToken.new(1000000);
+		this.token = await MyToken.new(process.env.INITIAL_TOKENS);
 	});
 
 	it("should assign all tokens to my account", async () => {
