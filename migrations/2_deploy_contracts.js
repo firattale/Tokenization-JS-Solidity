@@ -1,6 +1,6 @@
 const MyToken = artifacts.require("MyToken.sol");
 const MyTokenSale = artifacts.require("MyTokenSale.sol");
-require("dotenv").config({ path: "/Users/firat.tale/Desktop/tokenization/test/.env" });
+require("dotenv").config({ path: "../.env" });
 
 module.exports = async function (deployer) {
 	const addres = await web3.eth.getAccounts();
