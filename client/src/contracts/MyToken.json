@@ -8981,12 +8981,12 @@
         }
       },
       "links": {},
-      "address": "0x3006bB0310810212C4567421Fef56a645F3Ee1D4",
-      "transactionHash": "0x86b97574695f9406dc23a21b06392ccb5f15499349afd401211f8ead79ec8a55"
+      "address": "0x42fF6F045Cc1F379966218c23AE52638f9d3Eb23",
+      "transactionHash": "0x6cdbadd51e47832b168c3e5a352ad26745e3d845827ea0350dacb701524a8348"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-12-15T14:30:29.249Z",
+  "updatedAt": "2021-12-15T18:47:27.926Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

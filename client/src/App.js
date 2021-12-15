@@ -21,21 +21,16 @@ const App = () => {
 
 				// Get the contract instance.
 				const networkId = await web3.eth.net.getId();
-				const tokenInstance = new web3.eth.Contract(
-					MyToken.abi,
-					MyToken.networks[networkId] && MyToken.networks[networkId].address
-				);
+				const tokenInstance = new web3.eth.Contract(MyToken.abi, MyToken.networks[networkId]?.address);
 
-				const tokenSaleInstance = new web3.eth.Contract(
-					MyTokenSale.abi,
-					MyTokenSale.networks[networkId] && MyTokenSale.networks[networkId].address
-				);
+				const tokenSaleInstance = new web3.eth.Contract(MyTokenSale.abi, MyTokenSale.networks[networkId]?.address);
 				const kycInstance = new web3.eth.Contract(KYC.abi, KYC.networks[networkId] && KYC.networks[networkId].address);
 				setState({
 					accounts,
 					tokenInstance,
 					tokenSaleInstance,
 					kycInstance,
+					tokenSaleAddress: MyTokenSale.networks[networkId]?.address,
 				});
 				// Set web3, accounts, and contract to the state, and then proceed with an
 				// example of interacting with the contract's methods.
@@ -72,6 +67,8 @@ const App = () => {
 			<button type="button" onClick={handleKycWhitelisting}>
 				Add to Whitelist
 			</button>
+			<h2>Buy Tokens</h2>
+			<p>If you want to token sent wei to this address: {state.tokenSaleAddress}</p>
 		</div>
 	);
 };

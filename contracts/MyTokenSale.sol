@@ -21,5 +21,5 @@ contract MyTokensale is Crowdsale {
 		super._preValidatePurchase(beneficiary, weiAmount);
         require(kyc.isAllowed(msg.sender), "KYC not completed, You are not allowed to buy tokens");
 	}
-
+    
 }
