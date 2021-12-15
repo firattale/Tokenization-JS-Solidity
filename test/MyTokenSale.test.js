@@ -1,5 +1,6 @@
 const MyTokenSale = artifacts.require("MyTokenSale");
 const MyToken = artifacts.require("MyToken");
+const MyKycContract = artifacts.require("KycContract");
 require("dotenv").config({ path: "../.env" });
 
 const chai = require("./setupChai.js");
@@ -21,17 +22,26 @@ contract("MyTokenSale Test", async (accounts) => {
 		return expect(balanceOfTokenSaleSmartContract).to.be.a.bignumber.equal(totalSupply);
 	});
 	it("should be possible to buy tokens", async () => {
-		let tokenInstance = await MyToken.deployed();
-		let tokenSaleInstance = await MyTokenSale.deployed();
-		let balanceBeforeAccount = await tokenInstance.balanceOf.call(owner);
+		const tokenInstance = await MyToken.deployed();
+		const tokenSaleInstance = await MyTokenSale.deployed();
+		const kycInstance = await MyKycContract.deployed();
+		await kycInstance.setAllowed(owner, true, { from: owner });
+		const balanceBeforeAccount = await tokenInstance.balanceOf(owner);
+		await expect(
+			tokenSaleInstance.sendTransaction({
+				from: owner,
+				value: web3.utils.toWei("1", "wei"),
+			})
+		).to.be.fulfilled;
+		balanceBeforeAccount = balanceBeforeAccount.add(new BN(1));
+		return expect(tokenInstance.balanceOf(owner)).to.eventually.be.a.bignumber.equal(balanceBeforeAccount);
+		// await tokenSaleInstance.sendTransaction({
+		// 	from: owner,
+		// 	value: web3.utils.toWei("1", "wei"),
+		// });
 
-		await tokenSaleInstance.sendTransaction({
-			from: owner,
-			value: web3.utils.toWei("1", "wei"),
-		});
+		// const afterBalance = await tokenInstance.balanceOf.call(owner);
 
-		const afterBalance = await tokenInstance.balanceOf.call(owner);
-
-		return expect(balanceBeforeAccount + 1).to.be.bignumber.equal(afterBalance);
+		// return expect(balanceBeforeAccount + 1).to.be.bignumber.equal(afterBalance);
 	});
 });
