@@ -25,12 +25,16 @@ const App = () => {
 
 				const tokenSaleInstance = new web3.eth.Contract(MyTokenSale.abi, MyTokenSale.networks[networkId]?.address);
 				const kycInstance = new web3.eth.Contract(KYC.abi, KYC.networks[networkId] && KYC.networks[networkId].address);
+				const tokenAmount = await tokenInstance.methods.balanceOf(accounts[0]).call();
+
 				setState({
+					web3,
 					accounts,
 					tokenInstance,
 					tokenSaleInstance,
 					kycInstance,
 					tokenSaleAddress: MyTokenSale.networks[networkId]?.address,
+					tokenAmount,
 				});
 				// Set web3, accounts, and contract to the state, and then proceed with an
 				// example of interacting with the contract's methods.
@@ -55,12 +59,20 @@ const App = () => {
 		alert("KYC whitelisting successful for " + kycAddress);
 	};
 
+	const handleBuyTokens = async () => {
+		const { tokenSaleInstance, accounts, web3 } = state;
+		await tokenSaleInstance.methods
+			.buyTokens(accounts[0])
+			.send({ from: accounts[0], value: web3.utils.toWei("100", "wei") });
+		alert("Tokens bought successfully for " + kycAddress);
+	};
+
 	if (!loaded) {
 		return <div>Loading Web3, accounts, and contract...</div>;
 	}
 	return (
 		<div className="App">
-			<h1>Token Sale</h1>
+			<h1>FTALE Token Sale</h1>
 			<p>Get your tokens today.</p>
 			<h2>Kyc Whitelisting</h2>
 			Address to allow: <input type="text" name="kycAdress" value={kycAddress} onChange={handleInputChange} />
@@ -69,6 +81,10 @@ const App = () => {
 			</button>
 			<h2>Buy Tokens</h2>
 			<p>If you want to token sent wei to this address: {state.tokenSaleAddress}</p>
+			<p>You currently have {state.tokenAmount} FTALE Tokens</p>
+			<button type="button" onClick={handleBuyTokens}>
+				Buy More Tokens
+			</button>
 		</div>
 	);
 };
