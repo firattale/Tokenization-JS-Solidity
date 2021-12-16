@@ -22,6 +22,17 @@ module.exports = {
 				}),
 			network_id: "5777",
 		},
+		goerli_infura: {
+			provider: () =>
+				new HDWalletProvider({
+					mnemonic: {
+						phrase: mnemonic,
+					},
+					providerOrUrl: "https://goerli.infura.io/v3/34f277b88d444a3a9e650f2a1de68d7a",
+					addressIndex: 0,
+				}),
+			network_id: "5",
+		},
 	},
 	compilers: {
 		solc: {
